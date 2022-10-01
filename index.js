@@ -1,13 +1,18 @@
+// Packages
 const sharp = require("sharp");
 const fs = require("fs");
 const path = require("path");
 
+// Original Images directory
 const directoryName = "images";
 
+// Get file names
 const fileNames = fs.readdirSync(directoryName);
 
+// Loop through images
 fileNames.forEach((file) => {
 
+  // Get image format (extension)
   const fileFormat = getExtension(file);
 
   console.log("fileFormat", fileFormat)
@@ -15,8 +20,6 @@ fileNames.forEach((file) => {
     console.log("SVGs are not processed in this script at the moment");
     return;
   }
-
-
   let sh = sharp("./images/" + file);
 
   if( 'jpg' == fileFormat ) {
@@ -60,6 +63,7 @@ fileNames.forEach((file) => {
   })
 });
 
+// Get Image Extension
 function getExtension(filename) {
   let ext = path.extname(filename || "").split(".");
 
