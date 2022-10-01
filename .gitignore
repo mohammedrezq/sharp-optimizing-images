@@ -1,4 +1,4 @@
 node_modules
 original
-images
-output
+images/*
+output/*
