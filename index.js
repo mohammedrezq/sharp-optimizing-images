@@ -10,6 +10,7 @@ fileNames.forEach((file) => {
 
   const fileFormat = getExtension(file);
 
+  console.log("fileFormat", fileFormat)
   if (fileFormat === "svg") {
     console.log("SVGs are not processed in this script at the moment");
     return;
@@ -18,10 +19,34 @@ fileNames.forEach((file) => {
 
   let sh = sharp("./images/" + file);
 
-  sh.webp({lossless:true, quality: 80, alphaQuality: 100, force: true}).resize({
-    width: 900,
-    height: 900,
-  })
+  if(fileFormat == 'jpg') {
+    sh.jpeg({
+      quality: 80,
+      progressive: true,
+    }).resize(
+      {
+        fit:  sharp.fit.contain,
+        width: 900,
+      }
+    ).flip(true)
+  } else if ('png' === fileFormat) {
+    sh.png({
+      quality: 80,
+      progressive: true,
+    }).resize(
+      {
+        fit:  sharp.fit.contain,
+        width: 900,
+      }
+    )
+  }
+
+  // sh.png({
+    
+  // })
+  // sh.webp({lossless:true, quality: 80, alphaQuality: 100, force: true}).resize(
+  //   {fit: sharp.fit.contain, width: 700}
+  // )
 
   // if (fileFormat === "jpg" || fileFormat === "jpeg") {
   //   sh = sh.jpeg({ quality: 70 }).resize({
@@ -41,7 +66,7 @@ fileNames.forEach((file) => {
   console.log(fileNameWOExtension);
 
 
-  sh.toFile('output/' + `${fileNameWOExtension}.webp`, function (err, info) {
+  sh.toFile('output/' + `${file}`, function (err, info) {
     // console.log(info);
     if(err) {
       console.log(err + "Error occurred while optimization process")
